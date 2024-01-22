@@ -2,13 +2,15 @@
 #By: Brian Zhu
 #Restores the Full Windows Context Menu to Windows 11 via Registry Changes
 
-#Run as Admin
+#Script Path
+$scriptPath = $MyInvocation.MyCommand.Path
+
+#Check if running as Admin
 $currentPrincipal = New-Object Security.Principal.WindowsPrincipal([Security.Principal.WindowsIdentity]::GetCurrent())
 if (!$currentPrincipal.IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)) {
-    #Change the path to -File as needed
-    Start-Process powershell.exe -Verb "RunAs" -ArgumentList "-File E:\Code\Powershell\Win11_RestoreContextMenu.ps1 -NoExit"
+    Start-Process powershell.exe -Verb "RunAs" -ArgumentList "-File $scriptPath -NoExit"
     exit 0
-}
+}#if
 
 #Initial screen & prompt
 Write-Host 
