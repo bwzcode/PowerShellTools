@@ -4,16 +4,6 @@
 # By: Brian Zhu 
 #>
 
-#Script Path
-$scriptPath = $MyInvocation.MyCommand.Path
-
-#Check if running as Admin
-$currentPrincipal = New-Object Security.Principal.WindowsPrincipal([Security.Principal.WindowsIdentity]::GetCurrent())
-if (!$currentPrincipal.IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)) {
-    Start-Process powershell.exe -Verb "RunAs" -ArgumentList "-File $scriptPath -NoExit"
-    exit 0
-}#if
-
 #Variables
 $CurrentDateTime = Get-Date -Format "yyyy-MM-dd HH:mm:ss"
 
