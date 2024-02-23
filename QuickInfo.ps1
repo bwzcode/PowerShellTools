@@ -5,9 +5,6 @@
 # By: Brian Zhu 
 #>
 
-#Output File
-$outFile = [System.IO.Path]::Combine([System.Environment]::GetFolderPath('MyDocuments'), 'QuickInfoSummary.txt')
-
 #Variables
 $CurrentDateTime = Get-Date -Format "yyyy-MM-dd HH:mm:ss"
 $serviceTag = (Get-CimInstance -ClassName Win32_BIOS).SerialNumber
@@ -55,6 +52,9 @@ else {
     }#else
 }#else
 
+#Output File
+$outFile = [System.IO.Path]::Combine([System.Environment]::GetFolderPath('MyDocuments'), 'QuickInfoSummary - '+$hostname+'.txt')
+
 #Output
 Write-Host 
 "***********************************************************************"
@@ -75,8 +75,15 @@ Write-Host "ICCID: $iccid" -ForegroundColor $iccidColor
 #Network Adapters & MAC Addresses
 Write-Host "`nNetwork Adapters & MAC Addresses" -ForegroundColor Magenta
 $netAdaptersConsole | Write-Host -ForegroundColor Green
-# Save to file
-Write-Host "Exporting Computer Information to $outFile" -ForegroundColor Yellow
-"Quick Info Script run on:$CurrentDateTime`r`n`r`nComputer Information`r`nComputer Model: $vendor $model`r`nService Tag: $serviceTag`r`nHostname: $hostname`r`nDomain: $domain`r`n`r`nCellular Information`r`nIMEI: $imei`r`nICCID: $iccid`r`n`r`nNetwork Adapters & MAC Addresses`r`n$netAdaptersFile" | Out-File -FilePath $outFile
-#Wait for User Input to exit
-Read-Host -Prompt "Script Completed, Press Enter to exit"
+#Save to file
+$filePrompt = Read-Host "Would you like to create an Output File? [Y/N] "
+if($filePrompt  -eq 'Y' -or $filePrompt  -eq 'y'){
+    Write-Host "Exporting Computer Information to $outFile" -ForegroundColor Yellow
+    "Quick Info Script run on:$CurrentDateTime`r`n`r`nComputer Information`r`nComputer Model: $vendor $model`r`nService Tag: $serviceTag`r`nHostname: $hostname`r`nDomain: $domain`r`n`r`nCellular Information`r`nIMEI: $imei`r`nICCID: $iccid`r`n`r`nNetwork Adapters & MAC Addresses`r`n$netAdaptersFile" | Out-File -FilePath $outFile
+    #Wait for User Input to exit
+    Read-Host -Prompt "Script Completed, Press Enter to exit"
+}#if
+else{
+    #Wait for User Input to exit
+    Read-Host -Prompt "Script Completed, Press Enter to exit"
+}#else
