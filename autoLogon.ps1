@@ -11,6 +11,16 @@ if (!$currentPrincipal.IsInRole([Security.Principal.WindowsBuiltInRole]::Adminis
     exit 0
 }#if
 
+# Domain Account Prompt
+$filePrompt = Read-Host "Is this a Domain Account? [Y/N] "
+if($filePrompt  -eq 'Y' -or $filePrompt  -eq 'y'){
+    $AutoLogonDomain = (Get-WmiObject Win32_ComputerSystem).Domain
+    Write-Host "Domain: $AutoLogonDomain"
+}#if
+else{
+    
+}#else
+
 # Prompt for User Input
 Write-Host "Please enter the Username & Password you would like to use for AutoLogon"
 
