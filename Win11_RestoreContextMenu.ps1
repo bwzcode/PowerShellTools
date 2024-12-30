@@ -5,12 +5,14 @@
 #Script Path
 $scriptPath = $MyInvocation.MyCommand.Path
 
-#Check if running as Admin
+#Check if Admin
+#Run as Admin if not
 $currentPrincipal = New-Object Security.Principal.WindowsPrincipal([Security.Principal.WindowsIdentity]::GetCurrent())
 if (!$currentPrincipal.IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)) {
-    Start-Process powershell.exe -Verb "RunAs" -ArgumentList "-File $scriptPath -NoExit"
+    Start-Process powershell.exe -Verb "RunAs" -ArgumentList "-NoProfile -File `"$scriptPath`" -NoExit"
     exit 0
 }#if
+
 
 #Initial screen & prompt
 Write-Host 
